@@ -1,0 +1,5 @@
+--require expect.js
+--reporter spec
+--ui bdd
+--recursive
+--slow 20
