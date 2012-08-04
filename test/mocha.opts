@@ -1,5 +1,6 @@
---require expect.js
+--require should
 --reporter spec
 --ui bdd
 --recursive
 --slow 20
+--growl
