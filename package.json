@@ -1,6 +1,6 @@
 {
   "description": "A custom-made CMS for the Cougar Robotics website.",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "private": true,
   "dependencies": {
     "union": "0.3.0",
@@ -9,13 +9,13 @@
   },
   "devDependencies": {
     "api-easy": "0.3.2",
-    "vows": "0.6.1",
+    "vows": "0.6.1"
   },
   "scripts": {
     "test": "vows --spec",
     "start": "node app.js"
   },
-  "name": "c4-prototype",
+  "name": "c4-cms",
   "author": "Casey Chow",
   "homepage": "http://cougarrobotics.com/c4"
 }
