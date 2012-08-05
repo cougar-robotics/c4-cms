@@ -1,5 +1,5 @@
 --require should
---reporter spec
+--reporter list
 --ui bdd
 --recursive
 --slow 20
