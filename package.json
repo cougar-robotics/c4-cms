@@ -18,8 +18,8 @@
     "mocha": "1.3.x"
   , "nock": "0.13.x"
   , "sinon": "1.4.x"
-  , "should": "1.1.x"
-  , "Faker": "0.1.x"
+  , "chai": "1.1.x"
+  , "phony": "*"
   }
 , "scripts": {
     "test": "mocha",

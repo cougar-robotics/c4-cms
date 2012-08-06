@@ -36,3 +36,9 @@ Testing
 -------
 
 `npm test`
+
+License
+-------
+
+Copyright (C) 2012 Casey Chow. Licensed under the MIT license on the condition
+that this software is not used for evil.

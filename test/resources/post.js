@@ -1,6 +1,6 @@
-var should = require('should');
+var should = require('chai').Should();
 var _ = require('lodash');
-var Faker = require('Faker');
+var phony = require('phony').make_phony();
 
 var Post = require('../../resources/post');
 var helpers = require('../helpers');
@@ -10,12 +10,12 @@ describe('Post', function() {
 
     beforeEach(function() {
         this.valid_attrs = {
-                id: Faker.Lorem.sentence(10).replace(/ /, '-')
-            ,   title: Faker.Lorem.sentence(15)
-            ,   content: Faker.Lorem.paragraphs(5)
+                id: phony.title().replace(/ /, '-')
+            ,   title: phony.title()
+            ,   content: phony.lorem_paragraphs(4)
                 //TODO: test document-author relationship
             ,   author: null
-            ,   publish_status: Faker.Helpers.randomize(['published', 'in_review', 'draft', 'trash'])
+            ,   publish_status: 'published'
             ,   categories: ['robotics', 'team', 'random']
         };
         post = this.topic = Post.new(this.valid_attrs);
