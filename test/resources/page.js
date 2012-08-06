@@ -3,7 +3,6 @@ var _ = require('lodash');
 var Faker = require('Faker');
 
 var Page = require('../../resources/page');
-var document = require('./document');
 var helpers = require('../helpers');
 
 describe('Page', function() {
@@ -14,7 +13,6 @@ describe('Page', function() {
                 id: Faker.Lorem.sentence(10).replace(/ /, '-')
             ,   title: Faker.Lorem.sentence(15)
             ,   content: Faker.Lorem.paragraphs(5)
-                //TODO: test document-author relationship
             ,   author: null
             ,   publish_status: Faker.Helpers.randomize(['published', 'in_review', 'draft', 'trash'])
         };
@@ -27,11 +25,9 @@ describe('Page', function() {
     });
 
     describe('validations', function() {
-        document.validations();
     });
 
     describe('defaults', function() {
-        document.defaults();
     });
 
     xdescribe('hierarchy', function() {

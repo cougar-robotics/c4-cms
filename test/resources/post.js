@@ -3,7 +3,6 @@ var _ = require('lodash');
 var Faker = require('Faker');
 
 var Post = require('../../resources/post');
-var document = require('./document');
 var helpers = require('../helpers');
 
 describe('Post', function() {
@@ -28,12 +27,9 @@ describe('Post', function() {
     });
 
     describe('validations', function() {
-        document.validations();
     });
 
     describe('defaults', function() {
-        document.defaults();
-
         it('includes a default value for categories', function() {
             this.topic.categories = undefined;
             var validation = this.topic.validate();
