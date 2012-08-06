@@ -1,4 +1,4 @@
-var should = require('should');
+var should = require('chai').Should();
 var _ = require('lodash');
 var Seq = require('seq');
 
