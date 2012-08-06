@@ -52,7 +52,7 @@ describe('Document', function() {
         ]);
 
 
-        xit('requires an author');
+        it('requires an author');
 
         it('requires timestamps', function(done) {
             var topic = this.topic;
@@ -64,9 +64,9 @@ describe('Document', function() {
             });
         });
 
-        xit('allows for custom CSS and JS');
-        xit('supports revisions');
-        xit('is aware of which users can edit it');
+        it('allows for custom CSS and JS');
+        it('supports revisions');
+        it('is aware of which users can edit it');
     });
 
     describe('defaults', function() {
@@ -83,6 +83,8 @@ describe('Document', function() {
                 done();
             });
         });
+
+        it('correctly creates slugs when given titles with odd characters');
     });
 });
 
