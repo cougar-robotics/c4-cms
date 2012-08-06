@@ -1,5 +1,6 @@
 --require should
 --reporter list
+--growl
 --ui bdd
 --recursive
 --slow 20
