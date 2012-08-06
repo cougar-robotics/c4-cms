@@ -25,4 +25,7 @@
     "test": "mocha",
     "start": "node app.js"
   }
+, "engines": {
+    "node": "0.8.x"
+  }
 }
