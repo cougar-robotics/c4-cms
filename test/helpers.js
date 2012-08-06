@@ -4,6 +4,9 @@ var Seq = require('seq');
 
 var helpers = module.exports = {};
 
+// Validation Helpers
+// ==================
+
 // A little function to automate testing whether or not a model requires
 // a field. Takes in a list of properties (`this` is bound to the same subject
 // as usual, so we can access `this.topic`) and creates the necessary tests.
@@ -22,6 +25,9 @@ helpers.requires = function(properties) {
         });
     });
 };
+
+// This function tests all the enum property by taking all the good values and
+// a couple bad ones.
 
 helpers.enum = function(property, values, invalid_values) {
     it('only allows certain values for ' + property, function() {
@@ -45,6 +51,9 @@ helpers.enum = function(property, values, invalid_values) {
     });
 };
 
+// Tests to make sure a default is automatically popped into the resource if
+// empty.
+
 helpers.defaults = function(defaults) {
     _.each(defaults, function(value, property) {
         it('includes a default value for ' + property, function() {
@@ -56,3 +65,4 @@ helpers.defaults = function(defaults) {
         });
     });
 };
+

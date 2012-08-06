@@ -38,7 +38,6 @@ document.validations = function() {
 
     xit('allows for custom CSS and JS');
     xit('requires revisions');
-    xit('uses the given id as the slug');
     xit('supports revisions');
     xit('is aware of which users can edit it');
 };
