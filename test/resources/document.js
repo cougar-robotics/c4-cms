@@ -26,9 +26,14 @@ document.validations = function() {
 
     xit('requires an author');
 
-    it('requires timestamps', function() {
-        this.topic.should.have.property('ctime').with.a('number');
-        this.topic.should.have.property('mtime').with.a('number');
+    it('requires timestamps', function(done) {
+        var topic = this.topic;
+        topic.save(function(err) {
+            should.not.exist(err);
+            topic.should.have.property('ctime').with.a('number');
+            topic.should.have.property('mtime').with.a('number');
+            done();
+        });
     });
 
     xit('allows for custom CSS and JS');
@@ -41,5 +46,15 @@ document.validations = function() {
 document.defaults = function() {
     helpers.defaults({
         'publish_status': 'draft'
+    });
+
+    it('generates a slug automatically if id is missing', function(done) {
+        var topic = this.topic;
+        topic.id = undefined;
+        topic.save(function(err) {
+            should.not.exist(err);
+            topic.should.have.property('id', topic.title.replace(/ /, '-'));
+            done();
+        });
     });
 };

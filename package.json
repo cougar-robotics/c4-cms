@@ -1,27 +1,28 @@
 {
-  "description": "A custom-made CMS for the Cougar Robotics website.",
-  "version": "0.0.1",
-  "private": true,
-  "dependencies": {
-    "flatiron": "0.2.x",
-    "union": "0.3.x",
-    "plates": "0.4.x",
-    "resourceful": "0.2.x",
-    "lodash": "0.4.2",
-    "everyauth": "0.2.x",
-    "seq": "0.3.5"
-  },
-  "devDependencies": {
-    "mocha": "1.3.x",
-    "nock": "0.13.x",
-    "sinon": "1.4.x",
-    "expect.js": "0.1.x"
-  },
-  "scripts": {
+  "name": "c4-cms"
+, "author": "Casey Chow"
+, "homepage": "http://cougarrobotics.com/c4"
+, "description": "A custom-made CMS for the Cougar Robotics website."
+, "version": "0.0.1"
+, "private": true
+, "dependencies": {
+   "flatiron": "0.2.x"
+  , "union": "0.3.x"
+  , "plates": "0.4.x"
+  , "resourceful": "0.2.x"
+  , "lodash": "0.4.2"
+  , "everyauth": "0.2.x"
+  , "seq": "0.3.x"
+  }
+, "devDependencies": {
+    "mocha": "1.3.x"
+  , "nock": "0.13.x"
+  , "sinon": "1.4.x"
+  , "should": "1.1.x"
+  , "Faker": "0.1.x"
+  }
+, "scripts": {
     "test": "mocha",
     "start": "node app.js"
-  },
-  "name": "c4-cms",
-  "author": "Casey Chow",
-  "homepage": "http://cougarrobotics.com/c4"
+  }
 }

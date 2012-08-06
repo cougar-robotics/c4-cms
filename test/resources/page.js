@@ -1,5 +1,6 @@
 var should = require('should');
 var _ = require('lodash');
+var Faker = require('Faker');
 
 var Page = require('../../resources/page');
 var document = require('./document');
@@ -8,31 +9,21 @@ var helpers = require('../helpers');
 describe('Page', function() {
     var page;
 
-    before(function() {
+    beforeEach(function() {
         this.valid_attrs = {
-                id: 'test_page'
-            ,   title: 'This is a Title'
+                id: Faker.Lorem.sentence(10).replace(/ /, '-')
+            ,   title: Faker.Lorem.sentence(15)
+            ,   content: Faker.Lorem.paragraphs(5)
+                //TODO: test document-author relationship
             ,   author: null
-            ,   content: 'This is the content. It may be rather long.'
-            ,   publish_status: 'published'
+            ,   publish_status: Faker.Helpers.randomize(['published', 'in_review', 'draft', 'trash'])
         };
+        page = this.topic = Page.new(this.valid_attrs);
     });
 
-    beforeEach(function(done) {
-        var that = this;
-        Page.create(this.valid_attrs, function(err, _page) {
-            if (err) return done(err);
-            page = that.topic = _page;
-            page.save(done);
-        });
-    });
-
-    it('creates a new page given valid attributes', function(done) {
-        Page.create(this.valid_attrs, function(err, page) {
-            should.not.exist(err);
-            page.should.be.a('object');
-            done();
-        });
+    it('creates a new page given valid attributes', function() {
+        page.should.be.a('object');
+        page.validate().valid.should.be.true;
     });
 
     describe('validations', function() {

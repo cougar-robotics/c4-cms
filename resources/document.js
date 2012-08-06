@@ -20,4 +20,8 @@ exports.schema = function(doc) {
     });
 
     doc.timestamps();
+
+    doc.before('save', function(doc) {
+        doc.id = doc.id || doc.title.replace(/ /, '-');
+    })
 };

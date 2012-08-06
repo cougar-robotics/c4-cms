@@ -1,38 +1,30 @@
 var should = require('should');
 var _ = require('lodash');
+var Faker = require('Faker');
 
 var Post = require('../../resources/post');
 var document = require('./document');
+var helpers = require('../helpers');
 
 describe('Post', function() {
     var post;
 
-    before(function() {
+    beforeEach(function() {
         this.valid_attrs = {
-                id: 'test_post'
-            ,   title: 'This is a Title'
+                id: Faker.Lorem.sentence(10).replace(/ /, '-')
+            ,   title: Faker.Lorem.sentence(15)
+            ,   content: Faker.Lorem.paragraphs(5)
+                //TODO: test document-author relationship
             ,   author: null
-            ,   content: 'This is the content. It may be rather long.'
-            ,   publish_status: 'published'
+            ,   publish_status: Faker.Helpers.randomize(['published', 'in_review', 'draft', 'trash'])
             ,   categories: ['robotics', 'team', 'random']
-        }
+        };
+        post = this.topic = Post.new(this.valid_attrs);
     });
 
-    beforeEach(function(done) {
-        var that = this;
-        Post.create(this.valid_attrs, function(err, _post) {
-            if (err) return done(err);
-            post = that.topic = _post;
-            post.save(done);
-        });
-    });
-
-    it('creates a new post given valid attributes', function(done) {
-        Post.create(this.valid_attrs, function(err, post) {
-            should.not.exist(err);
-            post.should.be.a('object');
-            done();
-        });
+    it('creates a new post given valid attributes', function() {
+        post.should.be.a('object');
+        post.validate().valid.should.be.true;
     });
 
     describe('validations', function() {
