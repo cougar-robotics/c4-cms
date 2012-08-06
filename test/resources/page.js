@@ -1,29 +1,50 @@
+var should = require('should');
+var _ = require('lodash');
+
 var Page = require('../../resources/page');
 var document = require('./document');
+var helpers = require('../helpers');
 
 describe('Page', function() {
-    describe('fields', function() {
-        var page;
+    var page;
 
-        beforeEach(function(done) {
-            var that = this;
-            Page.create({
-                id: 'test_page',
-                title: 'This is a Title',
-                author: null,
-                content: 'This is the content. It may be rather long.'
-            }, function(err, _page) {
-                page = that.doc = _page;
-                page.save(done);
-            });
+    before(function() {
+        this.valid_attrs = {
+                id: 'test_page'
+            ,   title: 'This is a Title'
+            ,   author: null
+            ,   content: 'This is the content. It may be rather long.'
+            ,   publish_status: 'published'
+        };
+    });
+
+    beforeEach(function(done) {
+        var that = this;
+        Page.create(this.valid_attrs, function(err, _page) {
+            if (err) return done(err);
+            page = that.topic = _page;
+            page.save(done);
         });
+    });
 
-        afterEach(function(done) {
-            Page.destroy('test_page', function(err) {
-                done();
-            });
+    it('creates a new page given valid attributes', function(done) {
+        Page.create(this.valid_attrs, function(err, page) {
+            should.not.exist(err);
+            page.should.be.a('object');
+            done();
         });
+    });
 
-        document.behavior();
+    describe('validations', function() {
+        document.validations();
+    });
+
+    describe('defaults', function() {
+        document.defaults();
+    });
+
+    xdescribe('hierarchy', function() {
+        xit('has many children');
+        xit('has only one parent');
     });
 });

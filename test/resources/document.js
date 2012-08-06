@@ -1,9 +1,45 @@
-exports.behavior = function() {
-    it('has a title', function() {
-        this.doc.should.have.property('title', 'This is a Title');
+var Seq = require('seq');
+var should = require('should');
+var _ = require('lodash');
+var helpers = require('../helpers');
+
+var document = module.exports = {};
+
+document.validations = function() {
+    helpers.requires([
+        'title' 
+    //,   'author'
+    ,   'content'
+    ]);
+    
+    helpers.enum('publish_status', [
+        'in_review'
+    ,   'published'
+    ,   'draft'
+    ,   'trash'
+    ], [
+        'poor_quality'
+    ,   'dratt'
+    ,   'trashy'
+    ]);
+    
+
+    xit('requires an author');
+
+    it('requires timestamps', function() {
+        this.topic.should.have.property('ctime').with.a('number');
+        this.topic.should.have.property('mtime').with.a('number');
     });
-    xit('has an author');
-    it('has a content field', function() {
-        this.doc.should.have.property('content', 'This is the content. It may be rather long.');
+
+    xit('allows for custom CSS and JS');
+    xit('requires revisions');
+    xit('uses the given id as the slug');
+    xit('supports revisions');
+    xit('is aware of which users can edit it');
+};
+
+document.defaults = function() {
+    helpers.defaults({
+        'publish_status': 'draft'
     });
 };
