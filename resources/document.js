@@ -1,8 +1,10 @@
 // Common schema properties shared between the various documents.
+var config = require('../config');
 
 exports.schema = function(doc) {
     doc.use('couchdb', {
-        database: 'testdb'
+        uri: config.get('database:host')
+    ,   database: config.get('database:name')
     });
 
     doc.string('title', {

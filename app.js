@@ -1,8 +1,6 @@
-var flatiron = require('flatiron'),
-    path = require('path'),
-    app = flatiron.app;
-
-app.config.file({ file: path.join(__dirname, 'config', 'config.json') });
+var flatiron = require('flatiron');
+var config = require('config');
+var app = flatiron.app;
 
 app.use(flatiron.plugins.http);
 
