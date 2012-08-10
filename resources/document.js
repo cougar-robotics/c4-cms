@@ -25,5 +25,5 @@ exports.schema = function(doc) {
 
     doc.before('save', function(doc) {
         doc.id = doc.id || doc.title.replace(/ /, '-');
-    })
+    });
 };
