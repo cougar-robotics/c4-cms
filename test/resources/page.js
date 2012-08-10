@@ -5,17 +5,22 @@ var phony = require('phony').make_phony();
 var Page = require('../../resources/page');
 var helpers = require('../helpers');
 
-describe('Page', function() {
+describe('Page Resource', function() {
     var page;
-
-    beforeEach(function() {
-        this.valid_attrs = {
+    before(function() {
+        this.create_valid_attrs = function() {
+            return {
                 id: phony.title().replace(/ /, '-')
             ,   title: phony.title()
             ,   content: phony.lorem_paragraphs(5)
             ,   author: null
             ,   publish_status: 'published'
+            };
         };
+    });
+
+    beforeEach(function() {
+        this.valid_attrs = this.create_valid_attrs();
         page = this.topic = Page.new(this.valid_attrs);
     });
 
@@ -30,8 +35,16 @@ describe('Page', function() {
     describe('defaults', function() {
     });
 
-    xdescribe('hierarchy', function() {
-        xit('has many children');
+    describe('hierarchy', function() {
+        it('has many children', function(done) {
+            var child_attrs = this.create_valid_attrs();
+            Page.createPage(page.id, child_attrs, function(err, child) {
+                should.not.exist(err);
+                child.should.be.a('object');
+                child.id.should.equal('page/' + page.id + '/' + child_attrs.id);
+                done();
+            });
+        });
         xit('has only one parent');
     });
 });

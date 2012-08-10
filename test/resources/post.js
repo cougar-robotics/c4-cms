@@ -5,7 +5,7 @@ var phony = require('phony').make_phony();
 var Post = require('../../resources/post');
 var helpers = require('../helpers');
 
-describe('Post', function() {
+describe('Post Resource', function() {
     var post;
 
     beforeEach(function() {

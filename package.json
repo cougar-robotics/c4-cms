@@ -20,11 +20,13 @@
   , "nock": "0.13.x"
   , "sinon": "1.4.x"
   , "chai": "1.1.x"
+  , "sinon-chai": "2.1.x"
   , "phony": "*"
+  , "sandboxed-module": "0.1.x"
   }
 , "scripts": {
-    "test": "mocha",
-    "start": "node app.js"
+    "test": "mocha"
+  , "start": "node app.js"
   }
 , "engines": {
     "node": "0.8.x"

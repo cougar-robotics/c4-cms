@@ -6,7 +6,7 @@ var resourceful = require('resourceful');
 var document = require('../../resources/document');
 var helpers = require('../helpers');
 
-describe('Document', function() {
+describe('Document Resource', function() {
     var Document;
     var doc;
 
@@ -31,6 +31,19 @@ describe('Document', function() {
     it('creates a new doc given valid attributes', function() {
         doc.should.be.a('object');
         doc.validate().valid.should.be.true;
+    });
+
+    it('correctly saves to the database', function(done) {
+        doc.save(function(err, saved_doc) {
+            should.not.exist(err);
+            saved_doc.id.should.equal(doc.id);
+            Document.get(doc.id, function(err, retrieved_doc) {
+                should.not.exist(err);
+                should.exist(retrieved_doc);
+                retrieved_doc.id.should.equal(doc.id);
+                done();
+            });
+        });
     });
 
     describe('validations', function() {
@@ -85,6 +98,7 @@ describe('Document', function() {
         });
 
         it('correctly creates slugs when given titles with odd characters');
+        it('creates a unique id even if the slug is not unique');
     });
 });
 
