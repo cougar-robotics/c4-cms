@@ -2,4 +2,4 @@ language: node_js
 node_js:
   - 0.8
 before_script:
-  - curl -X PUT localhost:5984/testdb
+  - curl -X PUT localhost:5984/test
