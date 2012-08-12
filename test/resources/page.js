@@ -7,14 +7,15 @@ var helpers = require('../helpers');
 
 describe('Page Resource', function() {
     var page;
+
     before(function() {
         this.create_valid_attrs = function() {
             return {
-                id: phony.title().replace(/ /, '-')
-            ,   title: phony.title()
-            ,   content: phony.lorem_paragraphs(5)
-            ,   author: null
-            ,   publish_status: 'published'
+                    _id: phony.title().replace(/ /, '-')
+                ,   title: phony.title()
+                ,   content: phony.lorem_paragraphs(4)
+                ,   author: null
+                ,   publish_status: 'published'
             };
         };
     });
@@ -22,6 +23,13 @@ describe('Page Resource', function() {
     beforeEach(function() {
         this.valid_attrs = this.create_valid_attrs();
         page = this.topic = Page.new(this.valid_attrs);
+    });
+
+    afterEach(function(done) {
+        page.destroy(function(err) {
+            if (!err || err.reason === 'not_found') { done(); }
+            else { done(err); }
+        });
     });
 
     it('creates a new page given valid attributes', function() {
@@ -36,15 +44,20 @@ describe('Page Resource', function() {
     });
 
     describe('hierarchy', function() {
+        var child_attrs;
+        beforeEach(function(done) {
+            child_attrs = this.create_valid_attrs();
+            page.save(done);
+        });
+
         it('has many children', function(done) {
-            var child_attrs = this.create_valid_attrs();
-            Page.createPage(page.id, child_attrs, function(err, child) {
+            Page.createPage(page._id, child_attrs, function(err, child) {
                 should.not.exist(err);
                 child.should.be.a('object');
-                child.id.should.equal('page/' + page.id + '/' + child_attrs.id);
+                child._id.should.equal(page.id + '/' + child_attrs._id);
                 done();
             });
         });
-        xit('has only one parent');
+        it('has only one parent');
     });
 });

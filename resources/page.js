@@ -5,4 +5,5 @@ var _ = require('lodash');
 
 var Page = module.exports = resourceful.define('page', function() {
     document.schema(this);
+    this.child('page');
 });

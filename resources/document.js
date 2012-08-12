@@ -3,7 +3,8 @@ var config = require('../config');
 
 exports.schema = function(doc) {
     doc.use('couchdb', {
-        uri: config.get('database:host')
+        host: config.get('database:host')
+    ,   port: config.get('database:port')
     ,   database: config.get('database:name')
     });
 
@@ -24,6 +25,9 @@ exports.schema = function(doc) {
     doc.timestamps();
 
     doc.before('save', function(doc) {
-        doc.id = doc.id || doc.title.replace(/ /, '-');
+        if (!doc._id) {
+            doc._id = doc.title.toLowerCase().replace(/ /, '-');
+        }
+        return true;
     });
 };
