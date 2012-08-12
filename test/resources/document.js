@@ -6,7 +6,7 @@ var resourceful = require('resourceful');
 var document = require('../../resources/document');
 var helpers = require('../helpers');
 
-describe('Document Resource', function() {
+describe('Document resource', function() {
     var Document;
     var doc;
 
@@ -20,8 +20,7 @@ describe('Document Resource', function() {
         this.valid_attrs = {
                 id: phony.title().replace(/ /, '-')
             ,   title: phony.title()
-            ,   content: phony.lorem_paragraphs(5)
-                //TODO: test document-author relationship
+            ,   content: phony.lorem_paragraphs(4)
             ,   author: null
             ,   publish_status: 'published'
         };
@@ -36,7 +35,7 @@ describe('Document Resource', function() {
     it('correctly saves to the database', function(done) {
         doc.save(function(err, saved_doc) {
             should.not.exist(err);
-            saved_doc.id.should.equal(doc.id);
+            saved_doc.should.equal(doc);
             Document.get(doc.id, function(err, retrieved_doc) {
                 should.not.exist(err);
                 should.exist(retrieved_doc);
@@ -49,8 +48,7 @@ describe('Document Resource', function() {
     describe('validations', function() {
         helpers.requires([
             'title' 
-            //,   'author'
-            ,   'content'
+        ,   'content'
         ]);
 
         helpers.enum('publish_status', [

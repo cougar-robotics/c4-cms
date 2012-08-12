@@ -1,8 +1,11 @@
 var should = require('chai').Should();
 var _ = require('lodash');
-var Seq = require('seq');
 
 var helpers = module.exports = {};
+
+// A convenient reference to the global configuration object.
+
+helpers.config = require('../config');
 
 // Validation Helpers
 // ==================
@@ -65,4 +68,3 @@ helpers.defaults = function(defaults) {
         });
     });
 };
-

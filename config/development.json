@@ -1,7 +1,6 @@
 {
   "database": {
     "host": "127.0.0.1"
-  , "name": "testdb"
+  , "name": "test"
   }
-, "test": "the answer"
 }

@@ -17,8 +17,8 @@ exports.schema = function(doc) {
 
     doc.string('publish_status', {
             required: true
-        ,   enum: ['in_review', 'published', 'draft', 'trash']
-        ,   set: function(val) { return val || 'draft' }
+        ,   "enum": ['in_review', 'published', 'draft', 'trash']
+        ,   set: function(val) { return val || 'draft'; }
     });
 
     doc.timestamps();

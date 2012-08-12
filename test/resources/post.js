@@ -13,7 +13,6 @@ describe('Post Resource', function() {
                 id: phony.title().replace(/ /, '-')
             ,   title: phony.title()
             ,   content: phony.lorem_paragraphs(4)
-                //TODO: test document-author relationship
             ,   author: null
             ,   publish_status: 'published'
             ,   categories: ['robotics', 'team', 'random']
