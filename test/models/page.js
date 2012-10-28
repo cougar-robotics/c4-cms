@@ -2,7 +2,7 @@ var should = require('chai').Should();
 var _ = require('lodash');
 var phony = require('phony').make_phony();
 
-var Page = require('../../resources/page');
+var Page = require('../../models/page');
 var helpers = require('../helpers');
 
 describe('Page Resource', function() {
@@ -22,7 +22,7 @@ describe('Page Resource', function() {
 
     beforeEach(function() {
         this.valid_attrs = this.create_valid_attrs();
-        page = this.topic = Page.new(this.valid_attrs);
+        page = this.topic = new Page(this.valid_attrs);
     });
 
     afterEach(function(done) {
@@ -32,15 +32,9 @@ describe('Page Resource', function() {
         });
     });
 
-    it('creates a new page given valid attributes', function() {
+    it('creates a new page given valid attributes', function(done) {
         page.should.be.a('object');
-        page.validate().valid.should.be.true;
-    });
-
-    describe('validations', function() {
-    });
-
-    describe('defaults', function() {
+        page.validate(done);
     });
 
     describe('hierarchy', function() {

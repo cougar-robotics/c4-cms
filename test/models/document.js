@@ -1,9 +1,8 @@
 var should = require('chai').Should();
 var _ = require('lodash');
 var phony = require('phony').make_phony();
-var resourceful = require('resourceful');
 
-var document = require('../../resources/document');
+var document = require('../../models/document');
 var helpers = require('../helpers');
 
 describe('Document resource', function() {

@@ -2,10 +2,10 @@ var should = require('chai').Should();
 var _ = require('lodash');
 var phony = require('phony').make_phony();
 
-var Post = require('../../resources/post');
+var Post = require('../../models/post');
 var helpers = require('../helpers');
 
-describe('Post Resource', function() {
+describe('Post Model', function() {
     var post;
 
     beforeEach(function() {
@@ -17,24 +17,30 @@ describe('Post Resource', function() {
             ,   publish_status: 'published'
             ,   categories: ['robotics', 'team', 'random']
         };
-        post = this.topic = Post.new(this.valid_attrs);
+        post = this.topic = new Post(this.valid_attrs);
     });
 
-    it('creates a new post given valid attributes', function() {
+    it('creates a new post given valid attributes', function(done) {
         post.should.be.a('object');
-        post.validate().valid.should.be.true;
+        post.validate(done);
     });
 
     describe('validations', function() {
     });
 
     describe('defaults', function() {
-        it('includes a default value for categories', function() {
-            this.topic.categories = undefined;
-            var validation = this.topic.validate();
-            validation.valid.should.be.true;
-            validation.errors.should.be.empty;
-            this.topic.categories.should.eql([]);
+        it('includes a default value for categories', function(done) {
+            var attrs = _.omit(this.valid_attrs, 'categories');
+            var post = new Post(attrs);
+            var that = this;
+
+            this.topic.validate(function(err) {
+                should.not.exist(err);
+                should.exist(post.categories);
+                post.categories.should.be.a('array')
+                               .and.be.empty;
+                done();
+            });
         });
     });
 
