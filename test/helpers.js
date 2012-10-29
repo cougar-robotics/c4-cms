@@ -40,13 +40,23 @@ helpers.remove_topic_document = function() {
 // a field. Takes in a list of properties (`this` is bound to the same subject
 // as usual, so we can access `this.topic`) and creates the necessary tests.
 
-helpers.requires = function(properties) {
+helpers.requires = function(property) {
+    it('requires the ' + property + ' field', function(done) {
+        this.topic[property] = undefined;
+        this.topic.validate(function(err) {
+            should.exist(err);
+            err.errors[property].type.should.equal('required');
+            done();
+        });
+    });
+};
+
+helpers.optional = function(properties) {
     _.each(properties, function(property) {
-        it('requires the ' + property + ' field', function(done) {
+        it('does not require the ' + property + ' field', function(done) {
             this.topic[property] = undefined;
             this.topic.validate(function(err) {
-                should.exist(err);
-                err.errors[property].type.should.equal('required');
+                should.not.exist(err);
                 done();
             });
         });

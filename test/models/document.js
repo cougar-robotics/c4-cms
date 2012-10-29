@@ -46,7 +46,10 @@ describe('Document model', function() {
         });
     });
 
-    it('has a header image');
+    it('supports a header image');
+    it('supports revisions');
+    it('is aware of which users can edit it');
+    it('can retrieve its author');
 
     describe('validations', function() {
         helpers.requires([
@@ -78,8 +81,6 @@ describe('Document model', function() {
         });
 
         it('allows for custom CSS and JS');
-        it('supports revisions');
-        it('is aware of which users can edit it');
     });
 
     describe('defaults', function() {

@@ -4,17 +4,19 @@ var Schema = mongoose.Schema;
 var ObjectId = mongoose.SchemaTypes.ObjectId;
 
 var Document = require('./document');
-var Comment = require('./comment');
 
 // Declare Schema
-var postSchema = Document.schema.extend({
-    categories: {
-        type: [ String ],
-        default: [],
+var mediaSchema = Document.schema.extend({
+    kind: { 
+        type: String,
+        enum: [ 'photo', 'video', 'audio' ],
         required: true
     },
-    comments: [ ObjectId ] // FIXME: Is this the right syntax?
+    caption: String,
+    thumbnail: String
 });
 
+delete mediaSchema.header_image;
+
 // Declare Model
-var Post = module.exports = mongoose.model('Post', postSchema);
+var Media = module.exports = mongoose.model('Media', mediaSchema);
