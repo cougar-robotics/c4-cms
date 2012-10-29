@@ -4,7 +4,7 @@ var slugify = require('../lib/slugify');
 
 var documentSchema = new mongoose.Schema({
     title: { type: String, trim: true, required: true },
-    slug: String,
+    slug: { type: String, unique: true },
     author: String,
     content: { type: String, trim: true, required: true },
     publish_status: {

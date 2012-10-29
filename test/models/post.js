@@ -44,7 +44,7 @@ describe('Post Model', function() {
         });
     });
 
-    xdescribe('comments', function() {
+    describe('comments', function() {
 
     });
 });

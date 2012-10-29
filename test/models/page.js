@@ -19,25 +19,24 @@ describe('Page Model', function() {
                 ,   publish_status: 'published'
             };
         };
-        mongoose.connect(helpers.config.get('database'));
     });
+
+    helpers.database_setup_teardown();
 
     beforeEach(function() {
         this.valid_attrs = this.create_valid_attrs();
         page = this.topic = new Page(this.valid_attrs);
     });
 
-    afterEach(function(done) {
-        page.remove(done);
-    });
-
-    after(function(done) {
-        mongoose.disconnect(done);
-    });
+    afterEach(helpers.remove_topic_document());
 
     it('creates a new page given valid attributes', function(done) {
         page.should.be.a('object');
         page.validate(done);
+    });
+
+    it.skip('creates a valid url', function() { 
+        this.topic.url.should.match(helpers.url_regex);
     });
 
     describe('hierarchy', function() {

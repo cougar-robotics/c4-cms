@@ -10,6 +10,8 @@ var Document = require('./document');
 var pageSchema = Document.schema.extend({
 });
 
+// Virtuals
+
 // Validators
 
 // Declare Model

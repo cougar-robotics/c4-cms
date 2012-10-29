@@ -9,6 +9,8 @@ var helpers = module.exports = {};
 
 helpers.config = require('../config');
 
+helpers.url_regex = /[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi;
+
 // Setup/Teardown Helpers
 // ======================
 
@@ -92,6 +94,30 @@ helpers.defaults = function(konstructor, defaults) {
             var topic = new konstructor(attrs);
             topic.should.have.property(property, value);
             topic.validate(done);
+        });
+    });
+};
+
+
+// Uniqueness Errors
+// ==================
+
+// Make sure the field requires uniqueness.
+helpers.unique = function(konstructor, properties) { 
+    _.each(properties, function(property) { 
+        it('requires ' + property + ' to be unique', function(done) { 
+            var original = this.topic;
+            var duplicate = new konstructor(this.create_valid_attrs());
+
+            original.save(function(err) { 
+                should.not.exist(err);
+                duplicate[property] = original[property];
+                duplicate.save(function(err) { 
+                    should.exist(err);
+                    err.err.should.include('duplicate key error');
+                    done();
+                });
+            });
         });
     });
 };

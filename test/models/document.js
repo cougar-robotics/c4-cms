@@ -5,7 +5,7 @@ var phony = require('phony').make_phony();
 var Document = require('../../models/document');
 var helpers = require('../helpers');
 
-describe.only('Document model', function() {
+describe('Document model', function() {
     var doc;
 
     before(function() {
@@ -45,6 +45,8 @@ describe.only('Document model', function() {
             });
         });
     });
+
+    it('has a header image');
 
     describe('validations', function() {
         helpers.requires([
@@ -100,14 +102,29 @@ describe.only('Document model', function() {
             this.topic.save(function(err, topic) { 
                 should.not.exist(err);
                 topic.should.have.property('slug')
-                            .and.match(/^[a-zA-Z0-9-_]+$/);
+                            .and.match(/^[a-zA-Z0-9 -_+]+$/)
+                            .and.not.contain('/');
                 done();
             });
         });
     });
 
     describe('uniqueness', function() { 
-        it('creates a unique id even if the slug is not unique');
+        helpers.unique(Document, [ 'slug' ]);
+
+        it('creates a unique slug even if the title is not unique', function(done) { 
+            var original = this.topic;
+            var duplicate = new Document(this.create_valid_attrs());
+
+            original.save(function(err) { 
+                should.not.exist(err);
+                duplicate.title = original.title;
+                duplicate.save(function(err) { 
+                    should.not.exist(err);
+                    duplicate.slug.should.not.equal(original.slug);
+                    done();
+                });
+            });
+        });
     });
 });
-

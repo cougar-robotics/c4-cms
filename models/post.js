@@ -21,11 +21,5 @@ var postSchema = Document.schema.extend({
     }]
 });
 
-// Validators
-postSchema.path('slug').validate(function(value) {
-    // Make sure there are no slashes in the slug
-    return _.indexof(value, '/') == -1;
-});
-
 // Declare Model
 var Post = module.exports = mongoose.model('Post', postSchema);
