@@ -6,7 +6,7 @@
 , "version": "0.0.1"
 , "private": true
 , "dependencies": {
-    "express": "3.0.x"
+    "express": "3.0.0rc5"
   , "jade": "*"
   , "stylus": "*"
   , "mongoose": "3.3.x"
@@ -16,7 +16,6 @@
   , "seq": "0.3.x"
   , "nconf": "0.6.x"
   , "async": "0.1.x"
-  , "express-messages": "*"
   , "express-resource": "1.x.x"
   , "express-load": "1.1.x"
   }

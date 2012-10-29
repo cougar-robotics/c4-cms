@@ -1,9 +1,10 @@
 // Module Dependencies
-var express = require('express')
-  , routes = require('./routes')
-  , user = require('./routes/user')
-  , http = require('http')
-  , path = require('path');
+var express = require('express');
+var http = require('http');
+var path = require('path');
+var Resource = require('express-resource')
+var load = require('express-load');
+
 
 var app = express();
 
@@ -17,7 +18,6 @@ app.configure(function(){
   app.use(express.methodOverride());
   app.use(express.cookieParser('your secret here'));
   app.use(express.session());
-  app.dynamicHelpers({ messages: require('express-messages') });
   app.use(app.router);
   app.use(require('stylus').middleware(__dirname + '/public'));
   app.use(express.static(path.join(__dirname, 'public')));
@@ -27,11 +27,18 @@ app.configure('development', function(){
   app.use(express.errorHandler());
 });
 
-app.get('/', routes.index);
-app.get('/support', function(req, res){
-  res.render('home', { title: 'Support'});
-});
-app.get('/users', user.list);
+
+// Load the Necessary Controllers and Routes
+load('models')
+    .then('controllers')
+    .then('routes')
+    .into(app);
+
+//app.get('/', routes.index);
+//app.get('/support', function(req, res){
+  //res.render('home', { title: 'Support'});
+//});
+//app.get('/users', user.list);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));

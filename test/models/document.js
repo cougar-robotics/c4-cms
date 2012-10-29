@@ -108,7 +108,6 @@ describe.only('Document model', function() {
 
     describe('uniqueness', function() { 
         it('creates a unique id even if the slug is not unique');
-
     });
 });
 
