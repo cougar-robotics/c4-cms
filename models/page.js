@@ -13,4 +13,4 @@ var pageSchema = Document.schema.extend({
 // Validators
 
 // Declare Model
-var Page = module.exports = mongoose.model('Page', postSchema);
+var Page = module.exports = mongoose.model('Page', pageSchema);

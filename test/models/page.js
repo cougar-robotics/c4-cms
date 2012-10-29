@@ -1,11 +1,12 @@
 var should = require('chai').Should();
 var _ = require('lodash');
 var phony = require('phony').make_phony();
+var mongoose = require('mongoose');
 
 var Page = require('../../models/page');
 var helpers = require('../helpers');
 
-describe('Page Resource', function() {
+describe('Page Model', function() {
     var page;
 
     before(function() {
@@ -18,6 +19,7 @@ describe('Page Resource', function() {
                 ,   publish_status: 'published'
             };
         };
+        mongoose.connect(helpers.config.get('database'));
     });
 
     beforeEach(function() {
@@ -26,10 +28,11 @@ describe('Page Resource', function() {
     });
 
     afterEach(function(done) {
-        page.destroy(function(err) {
-            if (!err || err.reason === 'not_found') { done(); }
-            else { done(err); }
-        });
+        page.remove(done);
+    });
+
+    after(function(done) {
+        mongoose.disconnect(done);
     });
 
     it('creates a new page given valid attributes', function(done) {
@@ -38,20 +41,5 @@ describe('Page Resource', function() {
     });
 
     describe('hierarchy', function() {
-        var child_attrs;
-        beforeEach(function(done) {
-            child_attrs = this.create_valid_attrs();
-            page.save(done);
-        });
-
-        it('has many children', function(done) {
-            Page.createPage(page._id, child_attrs, function(err, child) {
-                should.not.exist(err);
-                child.should.be.a('object');
-                child._id.should.equal(page.id + '/' + child_attrs._id);
-                done();
-            });
-        });
-        it('has only one parent');
     });
 });

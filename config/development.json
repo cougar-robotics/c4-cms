@@ -1,6 +1,3 @@
 {
-  "database": {
-    "host": "localhost"
-  , "name": "test"
-  }
+  "database": "mongodb://localhost/c4-test"
 }

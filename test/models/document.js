@@ -2,21 +2,16 @@ var should = require('chai').Should();
 var _ = require('lodash');
 var phony = require('phony').make_phony();
 
-var document = require('../../models/document');
+var Document = require('../../models/document');
 var helpers = require('../helpers');
 
-describe('Document resource', function() {
-    var Document;
+describe.only('Document model', function() {
     var doc;
 
     before(function() {
-        Document = resourceful.define('document', function() {
-            document.schema(this);
-        });
         this.create_valid_attrs = function() {
             return {
-                    _id: phony.title().replace(/ /, '-')
-                ,   title: phony.title()
+                    title: phony.title()
                 ,   content: phony.lorem_paragraphs(4)
                 ,   author: null
                 ,   publish_status: 'published'
@@ -26,26 +21,23 @@ describe('Document resource', function() {
 
     beforeEach(function() {
         this.valid_attrs = this.create_valid_attrs();
-        doc = this.topic = Document.new(this.valid_attrs);
+        doc = this.topic = new Document(this.valid_attrs);
     });
 
-    afterEach(function(done) {
-        doc.destroy(function(err) {
-            if (!err || err.reason === 'not_found') { done(); }
-            else { done(err); }
-        });
-    });
+    helpers.database_setup_teardown();
 
-    it('creates a new doc given valid attributes', function() {
+    afterEach(helpers.remove_topic_document());
+
+    it('creates a new doc given valid attributes', function(done) {
         doc.should.be.a('object');
-        doc.validate().valid.should.be.true;
+        doc.validate(done);
     });
 
-    it('correctly saves to the database', function(done) {
+    it('saves to the database', function(done) {
         doc.save(function(err, saved_doc) {
             should.not.exist(err);
             saved_doc.should.equal(doc);
-            Document.get(doc._id, function(err, retrieved_doc) {
+            Document.findById(saved_doc._id, function(err, retrieved_doc) {
                 should.not.exist(err);
                 should.exist(retrieved_doc);
                 retrieved_doc.id.should.equal(doc.id);
@@ -61,9 +53,9 @@ describe('Document resource', function() {
         ]);
 
         helpers.enum('publish_status', [
-            'in_review'
-        ,   'published'
+            'published'
         ,   'draft'
+        ,   'in_review'
         ,   'trash'
         ], [
             'poor_quality'
@@ -77,8 +69,8 @@ describe('Document resource', function() {
         it('requires timestamps', function(done) {
             this.topic.save(function(err, topic) {
                 should.not.exist(err);
-                topic.should.have.property('ctime').with.a('number');
-                topic.should.have.property('mtime').with.a('number');
+                topic.should.have.property('created').that.is.a('date');
+                topic.should.have.property('modified').that.is.a('date');
                 done();
             });
         });
@@ -89,22 +81,34 @@ describe('Document resource', function() {
     });
 
     describe('defaults', function() {
-        helpers.defaults({
+        helpers.defaults(Document, {
             'publish_status': 'draft'
         });
 
         it('generates a slug automatically if id is missing', function(done) {
-            var topic = this.topic;
-            topic._id = undefined;
-            topic.save(function(err, topic) {
+            var that = this;
+            this.topic.save(function(err, topic) {
                 should.not.exist(err);
-                topic.should.have.property('_id', topic.title.toLowerCase().replace(/ /, '-'));
+                topic.should.have.property('slug');
                 done();
             });
         });
 
-        it('correctly creates slugs when given titles with odd characters');
+        it('generates a slug that doesn\'t have any odd characters', function(done) { 
+            var that = this;
+            this.topic.title = '♦☭☭¶http://.org:8080//\\3@#^#@$%^s/ro'
+            this.topic.save(function(err, topic) { 
+                should.not.exist(err);
+                topic.should.have.property('slug')
+                            .and.match(/^[a-zA-Z0-9-_]+$/);
+                done();
+            });
+        });
+    });
+
+    describe('uniqueness', function() { 
         it('creates a unique id even if the slug is not unique');
+
     });
 });
 

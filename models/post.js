@@ -8,10 +8,6 @@ var Document = require('./document');
 
 // Declare Schema
 var postSchema = Document.schema.extend({
-    publish_status: {
-        type: String,
-        enum: ['published','draft','in_review','trash']
-    },
     categories: {
         type: [ String ],
         default: [],
