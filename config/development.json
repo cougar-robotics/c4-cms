@@ -1,3 +1,4 @@
 {
-  "database": "mongodb://localhost/c4-test"
+  "database": "mongodb://localhost/c4-dev",
+  "test-database": "mongodb://localhost/c4-test"
 }

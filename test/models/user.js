@@ -1,10 +1,10 @@
 var should = require('chai').Should();
 var phony = require('phony').make_phony();
 
-var Post = require('../../models/post');
+var User = require('../../models/user');
 var helpers = require('../helpers');
 
-describe('Post Model', function() {
+describe('User Model', function() {
     var user;
 
     before(function() { 
@@ -18,8 +18,8 @@ describe('Post Model', function() {
     });
 
     it('creates a new user given valid attributes', function(done) {
-        post.should.be.a('object');
-        post.validate(done);
+        user.should.be.a('object');
+        user.validate(done);
     });
 
     describe('validations', function() {

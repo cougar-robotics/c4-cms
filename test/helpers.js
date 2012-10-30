@@ -18,7 +18,7 @@ helpers.url_regex = /[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0
 // Connect and disconnect from the database for each suite.
 helpers.database_setup_teardown = function() { 
     before(function() {
-        mongoose.connect(helpers.config.get('database'));
+        mongoose.connect(helpers.config.get('test-database'));
     });
 
     after(function(done) {

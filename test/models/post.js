@@ -10,8 +10,7 @@ describe('Post Model', function() {
 
     beforeEach(function() {
         this.valid_attrs = {
-                id: phony.title().replace(/ /, '-')
-            ,   title: phony.title()
+                title: phony.title()
             ,   content: phony.lorem_paragraphs(4)
             ,   author: null
             ,   publish_status: 'published'

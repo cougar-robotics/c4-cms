@@ -12,7 +12,7 @@ var commentSchema = new Schema({
     post: ObjectId
 });
 
-documentSchema.plugin(timestamps, { useVirtual: false });
+commentSchema.plugin(timestamps, { useVirtual: false });
 
 // Declare Model
 var Comment = module.exports = mongoose.model('Comment', commentSchema);

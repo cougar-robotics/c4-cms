@@ -12,8 +12,7 @@ describe('Page Model', function() {
     before(function() {
         this.create_valid_attrs = function() {
             return {
-                    _id: phony.title().replace(/ /, '-')
-                ,   title: phony.title()
+                    title: phony.title()
                 ,   content: phony.lorem_paragraphs(4)
                 ,   author: null
                 ,   publish_status: 'published'

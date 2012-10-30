@@ -18,7 +18,7 @@ var userSchema = new Schema({
     },
     role: {
         type: String,
-        enum: [ 'admin', 'editor', 'restr_editor', 'writer', 'restr_writer', 'commenter' ]
+        enum: [ 'admin', 'editor', 'restr_editor', 'writer', 'restr_writer', 'commenter' ],
         default: 'commenter'
     },
     email: String,
