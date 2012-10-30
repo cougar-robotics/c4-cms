@@ -1,4 +1,4 @@
 module.exports = function(app) {
-    var PageController = app.controllers.page;
-    app.resource('pages', PageController);
+    var PostController = app.controllers.post;
+    app.resource('posts', PostController);
 };
