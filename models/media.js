@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 var extend = require('mongoose-schema-extend');
+var _ = require('lodash');
 var Schema = mongoose.Schema;
 var ObjectId = mongoose.SchemaTypes.ObjectId;
 
@@ -13,10 +14,9 @@ var mediaSchema = Document.schema.extend({
         required: true
     },
     caption: String,
-    thumbnail: String
+    thumbnail: String,
+    format: String
 });
-
-delete mediaSchema.header_image;
 
 // Declare Model
 var Media = module.exports = mongoose.model('Media', mediaSchema);

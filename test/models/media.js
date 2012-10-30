@@ -20,6 +20,8 @@ describe('Media model', function() {
         };
     });
 
+    helpers.database_setup_teardown();
+
     beforeEach(function() {
         this.valid_attrs = this.create_valid_attrs();
         media = this.topic = new Media(this.valid_attrs);
@@ -28,6 +30,19 @@ describe('Media model', function() {
     it('creates a new media given valid attributes', function(done) {
         media.should.be.a('object');
         media.validate(done);
+    });
+
+    it('saves to the database', function(done) {
+        media.save(function(err, saved_media) {
+            should.not.exist(err);
+            saved_media.should.equal(media);
+            Media.findById(saved_media._id, function(err, retrieved_media) {
+                should.not.exist(err);
+                should.exist(retrieved_media);
+                retrieved_media.id.should.equal(media.id);
+                done();
+            });
+        });
     });
 
     describe('format recognition', function() { 
@@ -40,14 +55,37 @@ describe('Media model', function() {
         it('allows only media formats that can be transcoded or viewed by browsers');
     });
 
-    it('requires the content to be a valid http(s) URL');
+    it('requires the content to be a valid http(s) URL', function(done) { 
+        media.content = 'ftp://google.com/image.jpg';
+        media.validate(function(err) { 
+            should.exist(err);
+            err.errors.content.type.should.equal('regexp');
+        });
+    });
 
     describe('thumbnail', function() { 
         it('requires a valid URL');
         it('is automatically created if not uploaded');
     });
 
-    it('sanitizes the caption to contain only basic HTML');
-    it('overrides the slugging mechanism to give a uuid instead');
-    it('does not support a header image, unlike its parent');
+    it('sanitizes the caption to contain only basic HTML', function(done) { 
+        media.caption = 'Hi this is stuff. <script src="google.com/js.js"></script>';
+        media.save(function(err) { 
+            should.not.exist(err);
+            media.caption.should.not.contain('<script');
+            done();
+        });
+    });
+
+    it('overrides the slugging mechanism to give a uuid instead', function(done) { 
+        media.save(function(err) { 
+            should.not.exist(err);
+            media.slug.should.not.match(/^[a-z0-9-_+ ]+$/);
+            done();
+        });
+    });
+    it('does not support a header image, unlike its parent', function(done) { 
+        media.header_image = 'test';
+        media.validate(done);
+    });
 });
