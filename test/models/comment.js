@@ -48,14 +48,17 @@ describe('Comment model', function() {
     it('has to have a parent post');
     it('knows when it was created by the post Author');
 
+
     it('cannot be created on a post with comments disabled');
     it('has a comment lockout of 15 seconds');
 
+    helpers.requires('body');
     it('requires a substantial body', function(done) { 
         comment.body = 'too short?';
         comment.validate(function(err) { 
             should.exist(err);
-            err.errors.body.type.should.equal('length');
+            err.errors.body.type.should.equal('min_length');
+            done();
         });
     });
 
