@@ -11,10 +11,10 @@ describe('Document model', function() {
     before(function() {
         this.create_valid_attrs = function() {
             return {
-                    title: phony.title()
-                ,   content: phony.lorem_paragraphs(4)
-                ,   author: null
-                ,   publish_status: 'published'
+                title: phony.title()
+            ,   content: phony.lorem_paragraphs(4)
+            ,   author: null
+            ,   publish_status: 'published'
             };
         };
     });
@@ -46,49 +46,41 @@ describe('Document model', function() {
         });
     });
 
-    it('supports a header image');
     it('supports revisions');
     it('is aware of which users can edit it');
-    it('can retrieve its author');
 
-    describe('validations', function() {
-        helpers.requires([
-            'title' 
-        ,   'content'
-        ]);
+    helpers.requires('title');
+    it('sanitizes the title of anything malicious');
 
-        helpers.enum('publish_status', [
-            'published'
-        ,   'draft'
-        ,   'in_review'
-        ,   'trash'
-        ], [
-            'poor_quality'
-        ,   'dratt'
-        ,   'trashy'
-        ]);
+    helpers.requires('content');
+    it('sanitizes the content if the user is not an admin');
+    it('trims whitespace off the content');
 
+    helpers.enum('publish_status', 
+        [ 'published' , 'draft' , 'in_review' , 'trash' ], 
+        [ 'poor_quality' , 'dratt' , 'trashy' ]
+    );
 
-        it('requires an author');
-
-        it('requires timestamps', function(done) {
-            this.topic.save(function(err, topic) {
-                should.not.exist(err);
-                topic.should.have.property('created').that.is.a('date');
-                topic.should.have.property('modified').that.is.a('date');
-                done();
-            });
+    it('requires timestamps', function(done) {
+        this.topic.save(function(err, topic) {
+            should.not.exist(err);
+            topic.should.have.property('created').that.is.a('date');
+            topic.should.have.property('modified').that.is.a('date');
+            done();
         });
-
-        it('allows for custom CSS and JS');
     });
 
-    describe('defaults', function() {
-        helpers.defaults(Document, {
-            'publish_status': 'draft'
-        });
+    it('allows for custom CSS and JS');
 
-        it('generates a slug automatically if id is missing', function(done) {
+    helpers.defaults(Document, { 'publish_status': 'draft' });
+
+    describe('author', function() {
+        it('can retrieve its author');
+        it('requires an author');
+    });
+
+    describe('slug', function() { 
+        it('is generated automatically if id is missing', function(done) {
             var that = this;
             this.topic.save(function(err, topic) {
                 should.not.exist(err);
@@ -97,23 +89,34 @@ describe('Document model', function() {
             });
         });
 
-        it('generates a slug that doesn\'t have any odd characters', function(done) { 
+        it('doesn\'t have any odd characters', function(done) { 
             var that = this;
             this.topic.title = '♦☭☭¶http://.org:8080//\\3@#^#@$%^s/ro'
             this.topic.save(function(err, topic) { 
                 should.not.exist(err);
                 topic.should.have.property('slug')
-                            .and.match(/^[a-zA-Z0-9 -_+]+$/)
-                            .and.not.contain('/');
+                    .and.match(/^[a-zA-Z0-9 -_+]+$/)
+                    .and.not.contain('/');
                 done();
             });
         });
-    });
 
-    describe('uniqueness', function() { 
-        helpers.unique(Document, [ 'slug' ]);
+        it('is unique', function(done) {
+            var original = this.topic;
+            var duplicate = new Document(this.create_valid_attrs());
 
-        it('creates a unique slug even if the title is not unique', function(done) { 
+            original.save(function(err) { 
+                should.not.exist(err);
+                duplicate.slug = original.slug;
+                duplicate.save(function(err) { 
+                    should.exist(err);
+                    err.err.should.include('duplicate key error');
+                    duplicate.remove(done);
+                });
+            });
+        });
+
+        it('is unique even if the title is not', function(done) { 
             var original = this.topic;
             var duplicate = new Document(this.create_valid_attrs());
 
@@ -123,7 +126,7 @@ describe('Document model', function() {
                 duplicate.save(function(err) { 
                     should.not.exist(err);
                     duplicate.slug.should.not.equal(original.slug);
-                    done();
+                    duplicate.remove(done);
                 });
             });
         });

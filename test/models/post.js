@@ -24,22 +24,17 @@ describe('Post Model', function() {
         post.validate(done);
     });
 
-    describe('validations', function() {
-    });
+    it('includes a default value for categories', function(done) {
+        var attrs = _.omit(this.valid_attrs, 'categories');
+        var post = new Post(attrs);
+        var that = this;
 
-    describe('defaults', function() {
-        it('includes a default value for categories', function(done) {
-            var attrs = _.omit(this.valid_attrs, 'categories');
-            var post = new Post(attrs);
-            var that = this;
-
-            this.topic.validate(function(err) {
-                should.not.exist(err);
-                should.exist(post.categories);
-                post.categories.should.be.a('array')
-                               .and.be.empty;
-                done();
-            });
+        this.topic.validate(function(err) {
+            should.not.exist(err);
+            should.exist(post.categories);
+            post.categories.should.be.a('array')
+                           .and.be.empty;
+            done();
         });
     });
 

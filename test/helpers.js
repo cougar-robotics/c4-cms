@@ -9,7 +9,7 @@ var helpers = module.exports = {};
 
 helpers.config = require('../config');
 
-helpers.url_regex = /[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi;
+helpers.url_regex = require('../lib/regexps').url;
 
 // Setup/Teardown Helpers
 // ======================

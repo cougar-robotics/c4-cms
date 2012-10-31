@@ -6,7 +6,7 @@ var mongoose = require('mongoose');
 var Page = require('../../models/page');
 var helpers = require('../helpers');
 
-describe('Page Model', function() {
+describe('Page model', function() {
     var page;
 
     before(function() {
@@ -16,6 +16,7 @@ describe('Page Model', function() {
                 ,   content: phony.lorem_paragraphs(4)
                 ,   author: null
                 ,   publish_status: 'published'
+                ,   header_image: 'http://example.com/foo.php?f=foo-img.jpg'
             };
         };
     });
@@ -37,6 +38,31 @@ describe('Page Model', function() {
     it.skip('creates a valid url', function() { 
         this.topic.url.should.match(helpers.url_regex);
     });
+
+    describe('header image', function() {
+        it('rejects non-http(s) URLs', function(done) { 
+            page.header_image = 'ftp://example.com/foo.jpg';
+            page.validate(function(err) { 
+                should.exist(err);
+                err.errors.header_image.type.should.equal('regexp');
+                done();
+            });
+        });
+
+        it('rejects non-URLs', function(done) { 
+            page.header_image = 'foo.jpg';
+            page.validate(function(err) { 
+                should.exist(err);
+                err.errors.header_image.type.should.equal('regexp');
+                done();
+            });
+        });
+
+        it('automatically downloads the picture to the CDN');
+
+        helpers.optional([ 'header_image' ]);
+    });
+
 
     describe('hierarchy', function() {
     });
