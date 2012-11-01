@@ -81,7 +81,7 @@ describe('Media model', function() {
     it('overrides the slugging mechanism to give a uuid instead', function(done) { 
         media.save(function(err) { 
             should.not.exist(err);
-            media.slug.should.not.match(/^[a-z0-9-_+ ]+$/);
+            media.slug.should.not.match(/[a-z]{3,99}/i);
             done();
         });
     });
