@@ -28,7 +28,7 @@ var mediaSchema = Document.schema.extend({
 // Override the slugify method
 mediaSchema.methods.slugify = function(str) {
     var n = uuid.v4();
-    return n.substr(n.length - 4);
+    return n.substr(n.length - 6);
 };
 
 // Declare Model
