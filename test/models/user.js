@@ -61,7 +61,7 @@ describe('User model', function() {
                 user.validate(function(err) { 
                     should.exist(err);
                     err.errors['name.' + property].type
-                       .should.equal('regexp');
+                       .should.equal('letters only');
                     done();
                 });
             });
@@ -70,11 +70,11 @@ describe('User model', function() {
     });
 
     describe('email', function() { 
-        it('is required', function(done) { 
-            user.email = 'invalid$email@googlemail.com';
+        it('is checked for validity', function(done) { 
+            user.email = 'invalid$em@il@googlemail.com';
             user.validate(function(err) { 
                 should.exist(err);
-                err.errors.email.type.should.equal('regexp');
+                err.errors.email.type.should.equal('email format');
                 done();
             });
         });

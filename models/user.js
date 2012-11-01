@@ -1,13 +1,13 @@
 var mongoose = require('mongoose');
 var timestamps = require('../lib/timestamps');
 var slugify = require('../lib/slugify');
-var regexps = require('../lib/regexps');
+var validator = require('../lib/validator');
 var Schema = mongoose.Schema;
 
 var nameSchema = {
     type: String,
-    required: true,
-    match: regexps.letters_only
+    validate: validator('letters only', 'isAlpha'),
+    required: true
 };
 
 var userSchema = new Schema({
@@ -21,7 +21,11 @@ var userSchema = new Schema({
         enum: [ 'admin', 'editor', 'restr_editor', 'writer', 'restr_writer', 'commenter' ],
         default: 'commenter'
     },
-    email: String,
+    email: {
+        type: String,
+        required: true,
+        validate: validator('email format', 'isEmail')
+    },
     profile_pic: String,
     password: String,
     salt: String,

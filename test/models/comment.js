@@ -57,7 +57,7 @@ describe('Comment model', function() {
         comment.body = 'too short?';
         comment.validate(function(err) { 
             should.exist(err);
-            err.errors.body.type.should.equal('min_length');
+            err.errors.body.type.should.contain('minimum length');
             done();
         });
     });

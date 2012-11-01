@@ -9,8 +9,6 @@ var helpers = module.exports = {};
 
 helpers.config = require('../config');
 
-helpers.url_regex = require('../lib/regexps').url;
-
 // Setup/Teardown Helpers
 // ======================
 

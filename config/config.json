@@ -1,2 +1,5 @@
 {
+    "comment": {
+        "min_len": 25
+    }
 }

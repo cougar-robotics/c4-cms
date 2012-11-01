@@ -55,11 +55,12 @@ describe('Media model', function() {
         it('allows only media formats that can be transcoded or viewed by browsers');
     });
 
-    it('requires the content to be a valid http(s) URL', function(done) { 
-        media.content = 'ftp://google.com/image.jpg';
+    it('requires the content to be a valid web URL', function(done) { 
+        media.content = 'ssh://google.com/image.jpg';
         media.validate(function(err) { 
             should.exist(err);
-            err.errors.content.type.should.equal('regexp');
+            err.errors.content.type.should.contain('url format');
+            done();
         });
     });
 

@@ -41,10 +41,10 @@ describe('Page model', function() {
 
     describe('header image', function() {
         it('rejects non-http(s) URLs', function(done) { 
-            page.header_image = 'ftp://example.com/foo.jpg';
+            page.header_image = 'asdfasdf://example.com/foo.jpg';
             page.validate(function(err) { 
                 should.exist(err);
-                err.errors.header_image.type.should.equal('regexp');
+                err.errors.header_image.type.should.contain('url format');
                 done();
             });
         });
@@ -53,7 +53,7 @@ describe('Page model', function() {
             page.header_image = 'foo.jpg';
             page.validate(function(err) { 
                 should.exist(err);
-                err.errors.header_image.type.should.equal('regexp');
+                err.errors.header_image.type.should.contain('url format');
                 done();
             });
         });
