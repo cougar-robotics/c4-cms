@@ -21,13 +21,13 @@
   , "node-uuid": ">=1.2.0"
   , "validator": "0.4.x"
   , "express-validator": "0.1.x"
-  , "passport-yahoo-oauth": "0.1.x"
   }
 , "devDependencies": {
     "mocha": "1.3.x"
   , "nock": "0.13.x"
   , "sinon": "1.4.x"
   , "chai": "1.1.x"
+  , "factory-lady": "0.1.x"
   , "sinon-chai": "2.1.x"
   , "phony": "*"
   , "sandboxed-module": "0.1.x"

@@ -3,28 +3,19 @@ var phony = require('phony').make_phony();
 
 var Media = require('../../models/media');
 var helpers = require('../helpers');
+var Factory = require('../helpers/factories');
 
 describe('Media model', function() {
     var media;
 
-    before(function() { 
-        this.create_valid_attrs = function() { 
-            return {
-                title: phony.title(),
-                kind: 'audio',
-                author: null,
-                content: 'http://example.com/beethoven.mp3',
-                publish_status: 'in_review',
-                caption: phony.lorem_sentence()
-            };
-        };
-    });
-
     helpers.database_setup_teardown();
 
-    beforeEach(function() {
-        this.valid_attrs = this.create_valid_attrs();
-        media = this.topic = new Media(this.valid_attrs);
+    beforeEach(function(done) {
+        var that = this;
+        Factory.build('media', function(_media) { 
+            media = that.topic = _media;
+            done();
+        });
     });
 
     it('creates a new media given valid attributes', function(done) {
@@ -35,7 +26,6 @@ describe('Media model', function() {
     it('saves to the database', function(done) {
         media.save(function(err, saved_media) {
             should.not.exist(err);
-            saved_media.should.equal(media);
             Media.findById(saved_media._id, function(err, retrieved_media) {
                 should.not.exist(err);
                 should.exist(retrieved_media);

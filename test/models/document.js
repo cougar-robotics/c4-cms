@@ -1,27 +1,19 @@
 var should = require('chai').Should();
 var _ = require('lodash');
-var phony = require('phony').make_phony();
 
 var Document = require('../../models/document');
 var helpers = require('../helpers');
+var Factory = require('../helpers/factories');
 
 describe('Document model', function() {
     var doc;
 
-    before(function() {
-        this.create_valid_attrs = function() {
-            return {
-                title: phony.title()
-            ,   content: phony.lorem_paragraphs(4)
-            ,   author: null
-            ,   publish_status: 'published'
-            };
-        };
-    });
-
-    beforeEach(function() {
-        this.valid_attrs = this.create_valid_attrs();
-        doc = this.topic = new Document(this.valid_attrs);
+    beforeEach(function(done) {
+        var that = this;
+        Factory.build('document', function(_doc) { 
+            doc = that.topic = _doc;
+            done();
+        });
     });
 
     helpers.database_setup_teardown();
@@ -72,7 +64,10 @@ describe('Document model', function() {
 
     it('allows for custom CSS and JS');
 
-    helpers.defaults(Document, { 'publish_status': 'draft' });
+    it('includes a default publish_status' , function() {
+        var doc = new Document;
+        doc.should.have.property('publish_status');
+    });
 
     describe('author', function() {
         it('can retrieve its author');
@@ -102,31 +97,31 @@ describe('Document model', function() {
         });
 
         it('is unique', function(done) {
-            var original = this.topic;
-            var duplicate = new Document(this.create_valid_attrs());
-
-            original.save(function(err) { 
+            var orig = this.topic;
+            orig.save(function(err) { 
                 should.not.exist(err);
-                duplicate.slug = original.slug;
-                duplicate.save(function(err) { 
-                    should.exist(err);
-                    err.err.should.include('duplicate key error');
-                    duplicate.remove(done);
+                Factory.build('document', { slug: orig.slug }, function(dupe) { 
+                    dupe.save(function(err) { 
+                        should.exist(err);
+                        err.err.should.include('duplicate key error');
+                        dupe.remove(done);
+                    });
                 });
             });
         });
 
         it('is unique even if the title is not', function(done) { 
-            var original = this.topic;
-            var duplicate = new Document(this.create_valid_attrs());
+            var orig = this.topic;
 
-            original.save(function(err) { 
-                should.not.exist(err);
-                duplicate.title = original.title;
-                duplicate.save(function(err) { 
+            var orig = this.topic;
+            Factory.build('document', { title: orig.title }, function(dupe) { 
+                orig.save(function(err) { 
                     should.not.exist(err);
-                    duplicate.slug.should.not.equal(original.slug);
-                    duplicate.remove(done);
+                    dupe.save(function(err) { 
+                        should.not.exist(err);
+                        dupe.slug.should.not.equal(orig.slug);
+                        dupe.remove(done);
+                    });
                 });
             });
         });

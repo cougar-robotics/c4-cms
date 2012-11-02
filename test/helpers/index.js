@@ -2,12 +2,13 @@ var should = require('chai').Should();
 var _ = require('lodash');
 var async = require('async');
 var mongoose = require('mongoose');
+var Factory = require('./factories');
 
 var helpers = module.exports = {};
 
 // A convenient reference to the global configuration object.
 
-helpers.config = require('../config');
+helpers.config = require('../../config');
 
 // Setup/Teardown Helpers
 // ======================
@@ -95,13 +96,18 @@ helpers.enum = function(property, values, invalid_values) {
 // Tests to make sure a default is automatically popped into the resource if
 // empty.
 
-helpers.defaults = function(konstructor, defaults) {
+helpers.defaults = function(factory, defaults) {
     _.each(defaults, function(value, property) {
         it('includes a default value for ' + property, function(done) {
-            var attrs = _.omit(this.valid_attrs, property);
-            var topic = new konstructor(attrs);
-            topic.should.have.property(property, value);
-            topic.validate(done);
+            var attrs = {};
+            attrs[property] = undefined;
+            Factory.create(factory, attrs, function(topic) { 
+                topic.should.have.property(property, value);
+                topic.validate(function() { 
+                    should.not.exist(err);
+                    topic.remove(done);
+                });
+            });
         });
     });
 };

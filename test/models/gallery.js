@@ -3,26 +3,17 @@ var phony = require('phony').make_phony();
 
 var Gallery = require('../../models/gallery');
 var helpers = require('../helpers');
+var Factory = require('../helpers/factories');
 
 describe('Gallery model', function() {
     var gallery;
 
-    before(function() { 
-        this.create_valid_attrs = function() { 
-            return {
-                title: phony.title()
-            ,   content: phony.lorem_paragraphs(4)
-            ,   author: null
-            ,   publish_status: 'published'
-            ,   header_image: null
-            ,   media: null
-            };
-        };
-    });
-
-    beforeEach(function() {
-        this.valid_attrs = this.create_valid_attrs();
-        gallery = this.topic = new Gallery(this.valid_attrs);
+    beforeEach(function(done) {
+        var that = this;
+        Factory.build('gallery', function(_gallery) { 
+            gallery = that.topic = _gallery;
+            done();
+        });
     });
 
     helpers.database_setup_teardown();

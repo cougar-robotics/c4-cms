@@ -4,25 +4,17 @@ var phony = require('phony').make_phony();
 
 var Post = require('../../models/post');
 var helpers = require('../helpers');
+var Factory = require('../helpers/factories');
 
 describe('Post model', function() {
     var post;
 
-    before(function() { 
-        this.create_valid_attrs = function() { 
-            return {
-                title: phony.title()
-            ,   content: phony.lorem_paragraphs(4)
-            ,   author: null
-            ,   publish_status: 'published'
-            ,   categories: ['robotics', 'team', 'random']
-            }
-        };
-    });
-
-    beforeEach(function() {
-        this.valid_attrs = this.create_valid_attrs();
-        post = this.topic = new Post(this.valid_attrs);
+    beforeEach(function(done) {
+        var that = this;
+        Factory.build('post', function(_post) { 
+            post = that.topic = _post;
+            done();
+        });
     });
 
     helpers.database_setup_teardown();

@@ -4,35 +4,19 @@ var _ = require('lodash');
 
 var User = require('../../models/user');
 var helpers = require('../helpers');
+var Factory = require('../helpers/factories');
 
 describe('User model', function() {
     var user;
 
-    before(function() { 
-        this.create_valid_attrs = function() { 
-            return {
-                name: {
-                    display: phony.name(),
-                    first: phony.first_name(),
-                    last: phony.surname()
-                },
-                role: 'restr_editor',
-                email: 'john.doe@gmail.com',
-                profile_pic: 'http://example.com/foo.php?f=foo-img.jpg',
-                password: phony.letters(25),
-                gender: 'other',
-                birthday: new Date('11/23/2012'),
-                preferences: {
-                }
-            };
-        };
-    });
-
     helpers.database_setup_teardown();
 
-    beforeEach(function() {
-        this.valid_attrs = this.create_valid_attrs();
-        user = this.topic = new User(this.valid_attrs);
+    beforeEach(function(done) {
+        var that = this;
+        Factory.build('user', function(_user) { 
+            user = that.topic = _user;
+            done();
+        });
     });
 
     afterEach(helpers.remove_topic_document());
@@ -85,7 +69,10 @@ describe('User model', function() {
     });
 
     describe('profile picture', function() { 
-        helpers.defaults(User, { profile_pic: undefined });
+        it('has a default value', function() { 
+            var user = new User;
+            user.should.have.property('profile_pic');
+        });
         it('is required to be a URL from the CDN');
     });
 

@@ -1,26 +1,19 @@
 var should = require('chai').Should();
 var _ = require('lodash');
-var phony = require('phony').make_phony();
 
 var Comment = require('../../models/comment');
 var helpers = require('../helpers');
+var Factory = require('../helpers/factories');
 
 describe('Comment model', function() {
     var comment;
 
-    before(function() {
-        this.create_valid_attrs = function() {
-            return {
-                    author: null
-                ,   body: phony.lorem_paragraphs(4)
-                ,   post: null
-            };
-        };
-    });
-
-    beforeEach(function() {
-        this.valid_attrs = this.create_valid_attrs();
-        comment = this.topic = new Comment(this.valid_attrs);
+    beforeEach(function(done) {
+        var that = this;
+        Factory.build('comment', function(_comment) { 
+            comment = that.topic = _comment;
+            done();
+        });
     });
 
     helpers.database_setup_teardown();
