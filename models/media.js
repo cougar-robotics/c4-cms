@@ -3,6 +3,7 @@ var extend = require('mongoose-schema-extend');
 var validator = require('../lib/validator');
 var uuid = require('node-uuid');
 var _ = require('lodash');
+var sanitize = require('validator').sanitize;
 
 var Schema = mongoose.Schema;
 var ObjectId = mongoose.SchemaTypes.ObjectId;
@@ -20,7 +21,10 @@ var mediaSchema = Document.schema.extend({
         type: String,
         validate: validator('url format', 'isUrl')
     },
-    caption: String,
+    caption: {
+        type: String,
+        set: function(val) { return sanitize(val).xss(); }
+    },
     thumbnail: String,
     format: String
 });
