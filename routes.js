@@ -1,6 +1,12 @@
 module.exports = function(app) {
+    // Posts Controller Routes
+    // =======================
+    var PostController = app.controllers.post;
+    app.resource('posts', PostController);
+
+    // Page Controller Routes
+    // ======================
     var PageController = app.controllers.page;
-    // TODO: Figure out how to make the nested folder URLs
     app.resource('pages', PageController);
 
     app.get('/', function(req, res) { 
