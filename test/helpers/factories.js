@@ -14,14 +14,14 @@ var User = require('../../models/user');
 Factory.define('document', Document, {
     title: function(cb) { cb(phony.title()); }
 ,   content: function(cb) { cb(phony.lorem_paragraphs(4)); }
-,   author: null
+,   author: Factory.assoc('user', 'id')
 ,   publish_status: 'published'
 });
 
 Factory.define('page', Page, {
     title: function(cb) { cb(phony.title()); }
 ,   content: function(cb) { cb(phony.lorem_paragraphs(4)); }
-,   author: null
+,   author: Factory.assoc('user', 'id')
 ,   publish_status: 'published'
 ,   header_image: 'http://example.com/foo.php?f=foo-img.jpg'
 });
@@ -29,21 +29,21 @@ Factory.define('page', Page, {
 Factory.define('post', Post, {
     title: function(cb) { cb(phony.title()); }
 ,   content: function(cb) { cb(phony.lorem_paragraphs(4)); }
-,   author: null
+,   author: Factory.assoc('user', 'id')
 ,   publish_status: 'published'
 ,   categories: ['robotics', 'team', 'random']
 });
 
 Factory.define('comment', Comment, {
-    author: null
+    author: Factory.assoc('user', 'id')
 ,   body: function(cb) { cb(phony.lorem_paragraphs(4)); }
-,   post: null
+,   post: Factory.assoc('post', 'id')
 });
 
 Factory.define('media', Media, {
     title: function(cb) { cb(phony.title()); }
 ,   kind: 'audio'
-,   author: null
+,   author: Factory.assoc('user', 'id')
 ,   content: 'http://example.com/beethoven.mp3'
 ,   publish_status: 'in_review'
 ,   caption: function(cb) { cb(phony.lorem_sentence()); }
@@ -52,10 +52,10 @@ Factory.define('media', Media, {
 Factory.define('gallery', Gallery, {
     title: function(cb) { cb(phony.title()); }
 ,   content: function(cb) { cb(phony.lorem_paragraphs(4)); }
-,   author: null
+,   author: Factory.assoc('user', 'id')
 ,   publish_status: 'published'
 ,   header_image: null
-,   media: null
+,   media: [ Factory.assoc('media', 'id'), Factory.assoc('media', 'id') ]
 });
 
 Factory.define('user', User, {
