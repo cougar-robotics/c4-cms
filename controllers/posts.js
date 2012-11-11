@@ -13,6 +13,24 @@ Posts.index = function(req, res){
         });
 };
 
+Posts.search = function(req, res) {
+    var query = req.query || {};
+    _.each(['title', 'content'], function(property) { 
+        // http://stackoverflow.com/a/10616781/237904
+        if(query[property]) {
+            query[property] = RegExp('.*'+query[property]+'.*', 'i');
+            console.log(query[property])
+        }
+    });
+    Post.find(query)
+        .exec(function (err, posts) {
+            res.render('posts/index', {
+                title: 'Listing Posts Matching ' + JSON.stringify(req.query),
+                posts: posts
+            });
+        });
+};
+
 Posts.new = function(req, res){
     res.render('posts/new', {
         title: 'New Post',
@@ -77,10 +95,19 @@ Posts.update = function(req, res){
 };
 
 Posts.destroy = function(req, res){
-    req.post.remove(function(err) { 
+    var redirect = function(err) { 
         if (err) { req.flash(err); }
+        else {
+            req.flash('info', req.post.title + ' successfully deleted.');
+        }
         res.redirect('/posts');
-    });
+    }
+    if (req.post.publish_status == 'trash') {
+        req.post.remove(redirect);
+    } else {
+        req.post.publish_status = 'trash';
+        req.post.save(redirect);
+    }
 };
 
 Posts.load = function(req, res, next, id) {

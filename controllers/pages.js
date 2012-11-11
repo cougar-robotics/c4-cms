@@ -27,3 +27,7 @@ Pages.update = function(req, res){
 Pages.destroy = function(req, res){
     res.send('destroy page ' + req.params.page);
 };
+
+Pages.load = function(req, res, next, id) {
+    next(id);
+};

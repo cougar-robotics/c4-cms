@@ -16,7 +16,7 @@ form(action=action, method="post")
   br
   label(for="publish_status") Publish status:
     select(name="publish_status")
-      publish_statuses = { published:'Published', in_review:'In Review', draft:'Draft' }
+      publish_statuses = { published:'Published', in_review:'In Review', draft:'Draft', trash:'Trash' }
       each display, code in publish_statuses
         if code == post.publish_status
           option(value=code, selected)= display
