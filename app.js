@@ -1,9 +1,12 @@
 // Module Dependencies
 var express = require('express');
+var load = require('express-load');
+var resource = require('express-resource');
+
+var mongoose = require('mongoose');
+
 var http = require('http');
 var path = require('path');
-var Resource = require('express-resource')
-var load = require('express-load');
 
 var config = require('./config');
 
@@ -15,14 +18,17 @@ app.configure(function(){
     app.set('port', config.get('port') || 3000);
     app.set('views', __dirname + '/views');
     app.set('view engine', 'jade');
+    app.set('view options', { pretty: false });
     app.use(express.favicon());
     app.use(express.bodyParser());
     app.use(express.methodOverride());
     app.use(express.cookieParser('your secret here'));
     app.use(express.session());
+    app.use(require('./lib/flash'));
     app.use(app.router);
     app.use(require('stylus').middleware(__dirname + '/public'));
     app.use(express.static(path.join(__dirname, 'public')));
+    mongoose.connect(config.get('database'));
 });
 
 app.configure('development', function(){

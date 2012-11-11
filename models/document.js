@@ -2,6 +2,7 @@ var mongoose = require('mongoose');
 var _ = require('lodash');
 var timestamps = require('../lib/timestamps');
 var slugify = require('../lib/slugify');
+var merge = require('../lib/merge');
 var ObjectId = mongoose.SchemaTypes.ObjectId;
 
 var documentSchema = new mongoose.Schema({
@@ -18,5 +19,6 @@ var documentSchema = new mongoose.Schema({
 
 documentSchema.plugin(timestamps, { useVirtual: false });
 documentSchema.plugin(slugify);
+documentSchema.plugin(merge);
 
 module.exports = mongoose.model('Document', documentSchema);

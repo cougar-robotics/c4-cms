@@ -1,0 +1,8 @@
+extends ../layout
+block content
+  h1= title
+  put = true
+  include edit_form
+  form(action="/posts/#{post.slug}", method="post")
+    input(type="hidden", name="_method", value="delete")
+    input(type="submit", value="Destroy")

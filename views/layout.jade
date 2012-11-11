@@ -1,7 +1,12 @@
 doctype 5
 html
   head
-    title= title
-    link(rel='stylesheet', href='/stylesheets/style.css')
+    block head
+      title= title
+      link(rel='stylesheet', href='/stylesheets/style.css')
   body
+    if messages
+      .messages
+        each message in messages
+          p(class=message.type)= message.text
     block content

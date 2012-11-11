@@ -1,0 +1,6 @@
+article.post
+  header
+    a(href="/posts/#{post.slug}")
+      h2= post.title
+    small by #{post.author} at #{post.created}
+  .content!= post.content

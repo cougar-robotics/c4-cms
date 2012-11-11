@@ -1,0 +1,29 @@
+form(action=action, method="post")
+  if typeof 'put' !== undefined
+    input(type="hidden", name="_method", value="put")
+  label(for="title") Title:
+    input(type="text", name="title", value=post.title)
+  br
+  label(for="slug") Slug:
+    input(type="text", name="slug", value=post.slug)
+  br
+  //-label(for="title") Author:
+    //-input(type="text", name="author", value = post.author)
+  //-br
+  label(for="content") Content:
+    textarea(rows="10", columns="50", name="content") 
+      = post.content
+  br
+  label(for="publish_status") Publish status:
+    select(name="publish_status")
+      publish_statuses = { published:'Published', in_review:'In Review', draft:'Draft' }
+      each display, code in publish_statuses
+        if code == post.publish_status
+          option(value=code, selected)= display
+        else
+          option(value=code)= display
+  br
+  label(for="categories") Category:
+    input(type="text", name="categories", value=post.categories)
+  br
+  input(type="submit", value="Submit")
