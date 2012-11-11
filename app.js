@@ -40,7 +40,7 @@ app.configure('development', function(){
 // Load the necessary models, controllers, and routes
 load('models')
     .then('controllers')
-    .then('routes.js')
+    .then('routes')
     .into(app);
 
 // Start the server
